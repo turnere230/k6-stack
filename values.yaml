@@ -1,0 +1,21 @@
+
+replicaCount: 1
+
+prometheus:
+  image: prom/prometheus
+  tag: v2.47.2
+  name: prometheus
+  port: 9090
+  url: "http://prometheus.{{ .Release.Namespace }}.svc.cluster.local:9090"
+
+grafana:
+  image: grafana/grafana
+  tag: latest
+  name: grafana
+  port: 3000
+
+k6:
+  image: grafana/k6
+  tag: latest
+  name: k6
+  prometheus_rw_url: "http://prometheus.{{ .Release.Namespace }}.svc.cluster.local:9090/api/v1/write"

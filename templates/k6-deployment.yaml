@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.k6.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.k6.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.k6.name }}
+    spec:
+      containers:
+        - name: {{ .Values.k6.name }}
+          image: {{ .Values.k6.image }}:{{ .Values.k6.tag }}
+          args:
+            - run
+            - --out
+            - experimental-prometheus-rw
+            - /scripts/test.js
+          env:
+            - name: K6_PROMETHEUS_RW_SERVER_URL
+              value: {{ tpl .Values.k6.prometheus_rw_url . }}
+          volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+      volumes:
+        - name: script-volume
+          configMap:
+            name: {{ .Values.k6.name }}-test

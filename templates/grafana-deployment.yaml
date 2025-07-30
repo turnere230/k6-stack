@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.grafana.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.grafana.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.grafana.name }}
+    spec:
+      containers:
+        - name: {{ .Values.grafana.name }}
+          image: {{ .Values.grafana.image }}:{{ .Values.grafana.tag }}
+          ports:
+            - containerPort: {{ .Values.grafana.port }}
+          volumeMounts:
+            - name: {{ .Values.grafana.name }}-datasource
+              mountPath: /etc/grafana/provisioning/datasources
+      volumes:
+        - name: {{ .Values.grafana.name }}-datasource
+          configMap:
+            name: {{ .Values.grafana.name }}-datasource

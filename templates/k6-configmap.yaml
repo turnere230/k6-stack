@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.k6.name }}-test
+data:
+  test.js: |
+    import http from 'k6/http';
+    import { sleep } from 'k6';
+    export const options = {
+      vus: 1,
+      duration: '5m',
+    };
+    export default function () {
+      http.get('http://test.k6.io');
+      sleep(1);
+    }
