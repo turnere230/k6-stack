@@ -42,7 +42,7 @@ minikube start
 ### 2. Clone this Repository
 
 ```bash
-git clone https://github.com:turnere230/k6-stack.git
+git clone https://github.com/turnere230/k6-stack.git
 cd k6-stack
 ```
 
